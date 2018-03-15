@@ -11,7 +11,7 @@
 #include "write_data_pth.h"
 #include "sl_com.h"
 #include "deal_data_pth.h"
-#include "sig_recv_pth.h"
+#include "sig_recv_deal.h"
 
 int     daemon_flags = 0;
 char    log_type[8] = {0};

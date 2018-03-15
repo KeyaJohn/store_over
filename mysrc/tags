@@ -12,11 +12,10 @@ DIR	Makefile	/^DIR=.$/;"	m
 ERR	sl_log.h	12;"	d
 INF	sl_log.h	9;"	d
 LFLAG	Makefile	/^LFLAG= -L..\/lib -lrt -pthread -lconfig -lzlog$/;"	m
-MASK_SIG	sig_recv_pth.h	5;"	d
+MASK_SIG	sig_recv_deal.h	5;"	d
 OBJ	Makefile	/^OBJ=$(patsubst %.c,%.o,$(SRC))$/;"	m
 PATH_MAX	sl_com.h	4;"	d
-SIG_RETURN	sig_recv_pth.h	7;"	d
-SIG_RETURN	write_data_pth.c	19;"	d	file:
+SIG_RETURN	sig_recv_deal.h	7;"	d
 SIZE_G	sl_com.h	7;"	d
 SIZE_K	sl_com.h	5;"	d
 SIZE_M	sl_com.h	6;"	d
@@ -25,7 +24,7 @@ TYPE_DOUBLE	sl_conf.h	/^    TYPE_DOUBLE,$/;"	e	enum:__dat_type_t
 TYPE_INT	sl_conf.h	/^    TYPE_INT = 0,$/;"	e	enum:__dat_type_t
 TYPE_LONG	sl_conf.h	/^    TYPE_LONG,$/;"	e	enum:__dat_type_t
 TYPE_STRING	sl_conf.h	/^    TYPE_STRING$/;"	e	enum:__dat_type_t
-UNMASK_SIG	sig_recv_pth.h	6;"	d
+UNMASK_SIG	sig_recv_deal.h	6;"	d
 WAR	sl_log.h	10;"	d
 _SL_INIT_DEF_INFO_H_	init_def_info.h	3;"	d
 __SL_COMM_H__	sl_com.h	2;"	d
@@ -34,7 +33,7 @@ __SL_DISK_INFO_H__	init_disk_info.h	2;"	d
 __SL_LOG_H__	sl_log.h	2;"	d
 __SL_QUE_H__	sl_que.h	2;"	d
 __SL_READ_H__	deal_data_pth.h	2;"	d
-__SL_SIG_RECV_PTH_H__	sig_recv_pth.h	2;"	d
+__SL_SIG_RECV_PTH_H__	sig_recv_deal.h	2;"	d
 __SL_WRITE_H__	write_data_pth.h	2;"	d
 __dat_type_t	sl_conf.h	/^enum __dat_type_t$/;"	g
 __def_info_t	init_def_info.h	/^typedef struct __def_info_t$/;"	s
@@ -42,11 +41,11 @@ __disk_info_t	init_disk_info.h	/^typedef struct __disk_info_t$/;"	s
 __node_info_t	init_disk_info.h	/^typedef struct __node_info_t$/;"	s
 __que_t	sl_que.h	/^typedef struct __que_t$/;"	s
 __rthr_info_t	deal_data_pth.h	/^typedef struct __rthr_info_t$/;"	s
-__sthr_info_t	sig_recv_pth.h	/^typedef struct __sthr_info_t$/;"	s
+__sthr_info_t	sig_recv_deal.h	/^typedef struct __sthr_info_t$/;"	s
 __wthr_info_t	write_data_pth.h	/^typedef struct __wthr_info_t$/;"	s
 bbuff	init_disk_info.h	/^    que_t           *bbuff;$/;"	m	struct:__disk_info_t
 block	sl_que.h	/^    char    **block;$/;"	m	struct:__que_t
-block_allsig	sig_recv_pth.c	/^int block_allsig(int flag)$/;"	f
+block_allsig	sig_recv_deal.c	/^int block_allsig(int flag)$/;"	f
 block_num	sl_que.h	/^    int     block_num;$/;"	m	struct:__que_t
 buff	init_disk_info.h	/^    char buff[SIZE_M];$/;"	m	struct:__node_info_t
 buffer	deal_data_pth.h	/^    node_info_t **buffer;$/;"	m	struct:__rthr_info_t
@@ -57,7 +56,7 @@ close_conf	sl_conf.c	/^void close_conf()$/;"	f
 close_log	sl_log.c	/^void close_log()$/;"	f
 conf	init_def_info.c	/^char * conf = "..\/etc\/store.cfg";$/;"	v
 cpu_id	deal_data_pth.h	/^    int cpu_id;$/;"	m	struct:__rthr_info_t
-cpu_id	sig_recv_pth.h	/^    int cpu_id;$/;"	m	struct:__sthr_info_t
+cpu_id	sig_recv_deal.h	/^    int cpu_id;$/;"	m	struct:__sthr_info_t
 cpu_id	write_data_pth.h	/^   int cpu_id;$/;"	m	struct:__wthr_info_t
 ctrl_file	init_def_info.h	/^    char ctrl_file[PATH_MAX];   \/\/管道文件路径$/;"	m	struct:__def_info_t
 cur_fsize	init_disk_info.h	/^    int64_t         cur_fsize;\/\/当前文件大小$/;"	m	struct:__disk_info_t
@@ -75,7 +74,6 @@ disk_num	write_data_pth.h	/^   int disk_num;$/;"	m	struct:__wthr_info_t
 fbuff	init_disk_info.h	/^    que_t           *fbuff;$/;"	m	struct:__disk_info_t
 file_fd	init_disk_info.h	/^    int             file_fd;$/;"	m	struct:__disk_info_t
 file_size	init_disk_info.h	/^    int64_t         file_size;\/\/文件指定大小$/;"	m	struct:__disk_info_t
-fun	write_data_pth.c	/^void fun(int sig)$/;"	f
 get_opt	main.c	/^static int get_opt(int argc, char *argv[])$/;"	f	file:
 get_pdata	deal_data_pth.c	/^char *get_pdata()$/;"	f
 get_read	sl_que.h	25;"	d
@@ -86,7 +84,6 @@ get_write	sl_que.h	28;"	d
 init_deal_pth_info	deal_data_pth.c	/^int init_deal_pth_info()$/;"	f
 init_def_info	init_def_info.c	/^int init_def_info()$/;"	f
 init_disk_info	init_disk_info.c	/^int init_disk_info()$/;"	f
-init_sig_pth	sig_recv_pth.c	/^void init_sig_pth()$/;"	f
 init_system	main.c	/^void init_system()$/;"	f
 init_write_pth	write_data_pth.c	/^int init_write_pth()$/;"	f
 is_full	init_disk_info.h	/^    int             is_full;\/\/判断该磁盘是否有空闲节点$/;"	m	struct:__disk_info_t
@@ -95,6 +92,7 @@ log_file	init_def_info.h	/^    char log_file[PATH_MAX];    \/\/日志文件路�
 log_handle	sl_log.c	/^zlog_category_t *log_handle = NULL;$/;"	v
 log_type	main.c	/^char    log_type[8] = {0};$/;"	v
 main	main.c	/^int main(int argc, char *argv[])$/;"	f
+make_sig_action	sig_recv_deal.c	/^int make_sig_action()$/;"	f
 min_disk_id	deal_data_pth.h	/^    int min_disk_id;$/;"	m	struct:__rthr_info_t
 my_aiocb	init_disk_info.h	/^    struct aiocb    *my_aiocb;$/;"	m	struct:__disk_info_t	typeref:struct:__disk_info_t::aiocb
 node_info	init_disk_info.h	/^    node_info_t     *node_info;$/;"	m	struct:__disk_info_t
@@ -123,20 +121,17 @@ rthr_num	init_def_info.h	/^    int rthr_num;   \/\/处理线程个数$/;"	m	stru
 scpu_id	init_def_info.h	/^    int scpu_id;   \/\/信号处理线程的cpuid$/;"	m	struct:__def_info_t
 seg_type	init_def_info.h	/^    int seg_type;   \/\/文件分割方式0-时间,1-大小$/;"	m	struct:__def_info_t
 seg_type	init_disk_info.h	/^    int             seg_type;\/\/0-time 1-size$/;"	m	struct:__disk_info_t
-sig_write	sig_recv_pth.c	/^void sig_write(int signo, siginfo_t *info, void *ctext)$/;"	f
+sig_write	sig_recv_deal.c	/^void sig_write(int signo, siginfo_t *info, void *ctext)$/;"	f
 ssize	init_def_info.h	/^    int64_t ssize;  \/\/文件分割大小$/;"	m	struct:__def_info_t
 start_deal_data	deal_data_pth.c	/^int start_deal_data()$/;"	f
-start_sig_listen	sig_recv_pth.c	/^int start_sig_listen()$/;"	f
 start_write_data	write_data_pth.c	/^int start_write_data()$/;"	f
-sthr_info	sig_recv_pth.c	/^sthr_info_t * sthr_info = NULL;$/;"	v
-sthr_info_t	sig_recv_pth.h	/^}sthr_info_t;$/;"	t	typeref:struct:__sthr_info_t
+sthr_info_t	sig_recv_deal.h	/^}sthr_info_t;$/;"	t	typeref:struct:__sthr_info_t
 sthr_num	init_def_info.h	/^    int sthr_num;   \/\/信号处理线程个数$/;"	m	struct:__def_info_t
 stime	init_def_info.h	/^    int64_t stime;  \/\/文件分割的间隔时间$/;"	m	struct:__def_info_t
 thr_id	deal_data_pth.h	/^    int thr_id;$/;"	m	struct:__rthr_info_t
-thr_id	sig_recv_pth.h	/^    int thr_id;$/;"	m	struct:__sthr_info_t
+thr_id	sig_recv_deal.h	/^    int thr_id;$/;"	m	struct:__sthr_info_t
 thr_id	write_data_pth.h	/^   int thr_id;$/;"	m	struct:__wthr_info_t
 thr_run	deal_data_pth.c	/^void *thr_run(void *args)$/;"	f
-ths_run	sig_recv_pth.c	/^void *ths_run(void *args)$/;"	f
 thw_run	write_data_pth.c	/^void *thw_run(void *args)$/;"	f
 time_temp	init_disk_info.h	/^    int64_t         time_temp;\/\/指定间隔时间$/;"	m	struct:__disk_info_t
 w_flag	init_disk_info.h	/^    volatile int    w_flag;$/;"	m	struct:__disk_info_t

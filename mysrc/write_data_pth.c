@@ -15,8 +15,7 @@
 #include "write_data_pth.h"
 #include "init_def_info.h"
 #include "init_disk_info.h"
-
-#define SIG_RETURN (SIGRTMIN+10)
+#include "sig_recv_deal.h"
 
 wthr_info_t * wthr_info = NULL;
 
@@ -71,19 +70,17 @@ void print_write_pth_info()
     }
 }
 
-void fun(int sig)
-{
-    puts("才fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-}
-
 void *thw_run(void *args)
 {
     wthr_info_t *w_info = NULL;
     int i = 0, disk_id;
     //time_t t;
-
+    
     w_info = (wthr_info_t *)args;
     
+    //安装信号，如果异步io写完数据后会触发该回调函数
+    make_sig_action();
+
     while(1) 
     {
         //t = time(NULL);

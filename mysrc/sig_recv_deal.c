@@ -5,10 +5,8 @@
 #include <aio.h>
 #include "sl_log.h"
 #include "init_def_info.h"
-#include "sig_recv_pth.h"
+#include "sig_recv_deal.h"
 #include "init_disk_info.h"
-
-sthr_info_t * sthr_info = NULL;
 
 //flag: 0-屏蔽信号 1-解除屏蔽
 int block_allsig(int flag)
@@ -29,25 +27,6 @@ int block_allsig(int flag)
     }
     return 0;
 }
-
-
-void init_sig_pth()
-{
-    sthr_info = (sthr_info_t*)malloc(sizeof(sthr_info_t));
-    if( sthr_info == NULL )
-    {
-        ERR("malloc sthr_info err");
-        return ;
-    }
-    int i;
-    for(i=0; i<def_info->sthr_num; i++)
-    {
-        sthr_info[i].thr_id = i;
-        sthr_info[i].cpu_id = i;
-    }
-}
-
-
 
 /*
 *     信号处理:
@@ -95,65 +74,30 @@ void sig_write(int signo, siginfo_t *info, void *ctext)
         }
     }
     */
-    puts("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
+    disk_info_t *d_info;
+    d_info = (disk_info_t*)info->si_ptr;
+    
+    d_info->w_flag = 1;
+    DBG("\t\t写入成功！---------------disk__id:%d---------------------------------------------------------",d_info->disk_id);
     return ;
 }
 
-
-void *ths_run(void *args)
+int make_sig_action()
 {
     struct sigaction sig_act;
+    //清空信号集和
     if (sigemptyset(&sig_act.sa_mask) < 0) 
     {
-        return NULL;
+        return -1;
     }
     sig_act.sa_flags = SA_SIGINFO;
     sig_act.sa_sigaction = sig_write;
 
     if (sigaction(SIG_RETURN, &sig_act, NULL)) 
     {
-        return NULL;
+        return -1;
     }
     //block_allsig(UNMASK_SIG);
-
-    puts("检测  oooooooooooooooooooooooooooooooiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiio\n");
-    while(1) 
-    {
-        sleep(10);
-    }
-    /*
-    int         sig;
-    siginfo_t   info;
-    sigset_t    signal_set;
-    block_allsig(UNMASK_SIG);
-    sigemptyset(&signal_set);
-    sigaddset(&signal_set, SIG_RETURN);
-    while(1) 
-    {
-        sig = sigwaitinfo(&signal_set, &info);
-        if (sig == SIG_RETURN) {
-        DBG("recv signale SIG_RETURN");
-    }
-    }
-    */
-    return NULL;
-}
-
-int start_sig_listen()
-{
-    pthread_t tid;
-/*
-    int i = 0;
-    for (i = 0; i < def_info->sthr_num; i++) 
-    {
-        if (pthread_create(&tid, NULL, ths_run, NULL) < 0) 
-        {
-            ERR("start write thread error!");
-            return -1;
-        }
-    }
-    */
-   pthread_create(&tid, NULL, ths_run, NULL);
     return 0;
 }
 
