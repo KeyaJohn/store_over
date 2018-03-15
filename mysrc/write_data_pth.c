@@ -6,13 +6,18 @@
 #include <pthread.h>
 #include <signal.h>
 #include <aio.h>
+#include <sys/types.h>
 #include <fcntl.h>
+#include "signal.h"
 #include "sl_com.h"
 #include "sl_que.h"
 #include "sl_log.h"
 #include "write_data_pth.h"
 #include "init_def_info.h"
 #include "init_disk_info.h"
+
+#define SIG_RETURN (SIGRTMIN+10)
+
 wthr_info_t * wthr_info = NULL;
 
 int init_write_pth()
@@ -66,6 +71,11 @@ void print_write_pth_info()
     }
 }
 
+void fun(int sig)
+{
+    puts("才fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+}
+
 void *thw_run(void *args)
 {
     wthr_info_t *w_info = NULL;
@@ -73,7 +83,7 @@ void *thw_run(void *args)
     //time_t t;
 
     w_info = (wthr_info_t *)args;
-
+    
     while(1) 
     {
         //t = time(NULL);
@@ -84,7 +94,8 @@ void *thw_run(void *args)
             //当前磁盘正在有数据写入，当前不能继续写入，应该等待正在写入的数据写入完成
             if (disk_info[disk_id].w_flag == 0) 
             {
-                DBG("disk:[%d] is writing data.........");
+                DBG("disk:[%d] is writing data,please wait.........");
+                sleep(1);
                 continue;
             }
             //循环获取每个磁盘数据队列中的数据
@@ -107,13 +118,6 @@ void *thw_run(void *args)
             strncpy(buff, disk_info[disk_id].node_info->buff, 31);
             DBG("get data:[%s]", buff);
             */
-            int ret = write(disk_info[disk_id].file_fd,disk_info[disk_id].node_info->buff,SIZE_M);
-            if ( ret < 0 )
-            {
-                ERR("write data err") ;
-                return NULL;
-            }
-            sleep(1);
 
             /*//对文件大小或者文件间隔时间进行判断，若超标则创建新文件
             if (disk_info[disk_id].seg_type == 0) 
@@ -131,7 +135,9 @@ void *thw_run(void *args)
                     //change_file(&disk_info[disk_id]);
                 }
             }
+            */
 
+            //在开辟my_aiocb时候，要初始化该空间，否则会出现写入出错的问题
             disk_info[disk_id].w_flag = 0;
             //指定aio要往哪个文件描述符里边写入数据
             disk_info[disk_id].my_aiocb->aio_fildes = disk_info[disk_id].file_fd;
@@ -140,20 +146,20 @@ void *thw_run(void *args)
             //要写入的数据长度
             disk_info[disk_id].my_aiocb->aio_nbytes = disk_info[disk_id].node_info->len;
             //从文件哪个位置开始写入数据
-            disk_info[disk_id].my_aiocb->aio_offset = disk_info[disk_id].cur_fsize;
+            disk_info[disk_id].my_aiocb->aio_offset = 0;// disk_info[disk_id].cur_fsize;
             //使用信号通知进程，系统已经完成数据的写入过程
             disk_info[disk_id].my_aiocb->aio_sigevent.sigev_notify = SIGEV_SIGNAL;
             //使用SIG_RETURN这个自定义信号来通知
-            //disk_info[disk_id].my_aiocb->aio_sigevent.sigev_signo = SIG_RETURN;
+            disk_info[disk_id].my_aiocb->aio_sigevent.sigev_signo = SIG_RETURN;
             //使用信号通知进程事件触发的时候，顺便携带一个参数过去
             disk_info[disk_id].my_aiocb->aio_sigevent.sigev_value.sival_ptr = &disk_info[disk_id];
             //开始写入
-            while (aio_write(disk_info[disk_id].my_aiocb) < 0) 
+            while(aio_write(disk_info[disk_id].my_aiocb) < 0) 
             {
-                usleep(10);
+                DBG("\t\t\t\taio写入错误");
+                sleep(1);
                 continue;
             }
-            */
         }
     }
     return NULL;
@@ -163,7 +169,7 @@ void *thw_run(void *args)
 int start_write_data()
 {
     pthread_t tid;
-    int i = 0;
+   /* int i = 0;
     for (i = 0; i < def_info->wthr_num; i++) 
     {
         if (pthread_create(&tid, NULL, thw_run, (void *)&wthr_info[i]) < 0) 
@@ -172,5 +178,7 @@ int start_write_data()
             return -1;
         }
     }
+    */
+    pthread_create(&tid, NULL, thw_run, (void *)&wthr_info[0]);
     return 0;
 }

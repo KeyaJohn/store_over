@@ -17,6 +17,7 @@ typedef struct __disk_info_t
     int             file_fd;
     int             disk_id;
     int             seg_type;//0-time 1-size
+    int             is_full;//判断该磁盘是否有空闲节点
     int64_t         time_temp;//指定间隔时间
     int64_t         file_size;//文件指定大小
     int64_t         cur_fsize;//当前文件大小

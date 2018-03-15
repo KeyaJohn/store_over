@@ -69,7 +69,7 @@ void print_deal_pth_info()
 */
 char *get_pdata()
 {
-    char *tmp = "jingtikaijiushi";
+    char *tmp = "jingtikaijiushihaoren";
     return tmp;
 }
 
@@ -87,7 +87,7 @@ void *thr_run(void *args)
     int disk_rid = 0;
     char *ptr = NULL;
     rthr_info_t *r_info = (rthr_info_t*)args;
-
+    
     for (i = 0; i < r_info->disk_num; i++) 
     {
         //从每一个磁盘空闲队列中获取一个节点，将地址赋值给处理线程的bufffer，通过buffer来操作空间
@@ -103,19 +103,27 @@ void *thr_run(void *args)
 
     while(1) 
     {
+        //获取一个即将写入数据的磁盘的id
+        disk_id = get_wdisk(r_info);
+        if( !disk_info[disk_id].is_full )     
+        {
+            DBG("磁盘没有可用的空闲的空间，正在等待.........");
+            sleep(1);
+            continue;
+        }
+        //获取已经获取的磁盘队列的节点下标
+        disk_rid = disk_id - r_info->min_disk_id;
+
         //获取数据
         ptr = get_pdata();
         if( NULL == ptr )
         {
             DBG("having no date to deal..............");
         }
-        //获取一个即将写入数据的磁盘的id
-        disk_id = get_wdisk(r_info);
-        //获取已经获取的磁盘队列的节点下标
-        disk_rid = disk_id - r_info->min_disk_id;
 
         if ((int64_t)(r_info->buffer[disk_rid]->len + strlen(ptr)) > (int64_t)SIZE_M) 
         {
+            DBG("线程所管理的磁盘:%d的buffer已经满1M,加入到busy队列",disk_id);
             //如果磁盘的节点数据已经即将写满1M，那就把节点放入数据队列bbuff中供写盘线程获取
             while(!write_inval(disk_info[disk_id].bbuff, node_info_t, r_info->buffer[disk_rid])) 
             {
@@ -124,17 +132,16 @@ void *thr_run(void *args)
                 continue;
             }
             //将节点放入数据队列中后，重新获取一个空闲节点准备写数据，并且将节点的写入长度情0
-            while(!read_outval(disk_info[disk_id].fbuff, node_info_t, r_info->buffer[disk_rid])) 
+            if(!read_outval(disk_info[disk_id].fbuff, node_info_t, r_info->buffer[disk_rid])) 
             {
-                //ERR("get %d disk idle que failed", disk_id);
-                sleep(1);
+                disk_info[disk_id].is_full = 0;
                 continue;
             }
             r_info->buffer[disk_rid]->len = 0;
         }
         //将数据拷贝到节点中
         memcpy(r_info->buffer[disk_rid]->buff + r_info->buffer[disk_rid]->len, ptr, strlen(ptr));
-        printf("写入数据：%s完成\n",r_info->buffer[disk_rid]->buff + r_info->buffer[disk_rid]->len);
+        printf("disk_id:%d 写入数据：%s完成\n",disk_id,r_info->buffer[disk_rid]->buff + r_info->buffer[disk_rid]->len);
         //对节点中数据的长度加上这次写入的数据长度
         r_info->buffer[disk_rid]->len += strlen(ptr);
         sleep(1);
@@ -148,7 +155,7 @@ int start_deal_data()
     int i = 0;
     pthread_t   tid;
 
-    for (i = 0; i < def_info->rthr_num; i++) 
+    /*for (i = 0; i < def_info->rthr_num; i++) 
     {
         if (pthread_create(&tid, NULL, thr_run, (void*)&rthr_info[i]) < 0) 
         {
@@ -156,5 +163,7 @@ int start_deal_data()
             return -1;
         }
     }
+    */
+    pthread_create(&tid, NULL, thr_run, (void*)&rthr_info[i]);
     return 0;
 }

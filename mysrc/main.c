@@ -11,6 +11,7 @@
 #include "write_data_pth.h"
 #include "sl_com.h"
 #include "deal_data_pth.h"
+#include "sig_recv_pth.h"
 
 int     daemon_flags = 0;
 char    log_type[8] = {0};
@@ -88,16 +89,18 @@ int main(int argc, char *argv[])
 	//c初始化系统
 	init_system();
     
+    //启动信号检测模块
+    //start_sig_listen();
+
     //启动数据写入模块
     start_write_data();
 
     //启动数据处理模块
     start_deal_data();
 
-
 	while(1) 
 	{
-		DBG("Run..........\n");
+//		DBG("Run..........\n");
 		sleep(1);
 	}
 	return 0;

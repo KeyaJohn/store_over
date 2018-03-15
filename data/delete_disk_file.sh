@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for ((i=1; i<=6; i++)) 
+for i in 1 2 3 4 5 6 
 do
     cd disk$i
     rm disk$i.dat

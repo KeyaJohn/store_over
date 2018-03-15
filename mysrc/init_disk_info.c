@@ -26,11 +26,14 @@ int init_disk_info()
     for (i = 0; i < def_info->disk_num; i++) 
     {
         disk_info[i].disk_id = i;
+        disk_info[i].is_full = 1;
         disk_info[i].seg_type = def_info->seg_type;
         disk_info[i].time_temp = def_info->stime;
         disk_info[i].file_size = def_info->ssize;
         disk_info[i].w_flag = 1; //当前是否可以从队列获取数据
         disk_info[i].my_aiocb = (struct aiocb*)malloc(sizeof(struct aiocb));
+            //在开辟my_aiocb时候，要初始化该空间，否则会出现写入出错的问题
+        memset(disk_info[i].my_aiocb,'\0',sizeof(struct aiocb));
         //打开磁盘路径上的描述符 
         strcpy(disk_info[i].path, def_info->path[i]);
         char path[PATH_MAX];
@@ -65,6 +68,7 @@ int print_disk_info()
     for(;i<def_info->disk_num;i++)
     {
         printf("w_flag:[%d]\n", disk_info[i].w_flag);
+        printf("is_full:[%d]\n", disk_info[i].is_full);
         printf("file_fd:[%d]\n", disk_info[i].file_fd);
         printf("disk_id:[%d]\n", disk_info[i].disk_id);
         printf("seg_type:[%d]\n", disk_info[i].seg_type);
