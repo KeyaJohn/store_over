@@ -2,7 +2,7 @@ DIR=.
 SRC=$(wildcard $(DIR)/*.c)
 OBJ=$(patsubst %.c,%.o,$(SRC))
 CFLAG= -g -Wall -I./ -I../inc
-LFLAG= -L../lib -lrt -pthread -lconfig -lzlog
+LFLAG= -L../lib -lrt -pthread -lconfig -lzlog -lpcap
 BIN=./test
 
 all:$(BIN)

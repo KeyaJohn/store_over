@@ -37,14 +37,16 @@ int block_allsig(int flag)
 */
 void sig_write(int signo, siginfo_t *info, void *ctext)
 {
-    /*disk_info_t *d_info;
-    DBG("get signal:[%d]", signo);
+    disk_info_t *d_info;
+    
+    puts("\n\niiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii\n");
     if (signo == SIG_RETURN)
     {
         d_info = (disk_info_t*)info->si_ptr;
+        //如果错误为0说明已经存入成功
         if (aio_error(d_info->my_aiocb) == 0) 
         {
-            //写入成功
+            //写入成功,但是需要判断是否完全写入
             if (d_info->my_aiocb->aio_nbytes != aio_return(d_info->my_aiocb)) 
             {
                 //写入数据不完全
@@ -73,12 +75,6 @@ void sig_write(int signo, siginfo_t *info, void *ctext)
             }
         }
     }
-    */
-    disk_info_t *d_info;
-    d_info = (disk_info_t*)info->si_ptr;
-    
-    d_info->w_flag = 1;
-    DBG("\t\t写入成功！---------------disk__id:%d---------------------------------------------------------",d_info->disk_id);
     return ;
 }
 
@@ -97,7 +93,7 @@ int make_sig_action()
     {
         return -1;
     }
-    //block_allsig(UNMASK_SIG);
+    block_allsig(UNMASK_SIG);
     return 0;
 }
 

@@ -101,7 +101,8 @@ int main(int argc, char *argv[])
 	while(1) 
 	{
 //		DBG("Run..........\n");
-		sleep(1);
+		sleep(10);
+       // pthread_kill()
 	}
 	return 0;
 }
