@@ -38,6 +38,10 @@ int init_deal_pth_info()
         }
         disk_id += area;
         rthr_info[i].buffer = (node_info_t**)malloc(sizeof(node_info_t*) * rthr_info[i].disk_num);
+        
+        //初始线程的获取数据队列
+        //data_node_t * ptr = NULL;
+        ring_init(rthr_info[i].data_que, data_node_t, 15);
     }
     return 0;
 }
@@ -67,10 +71,19 @@ void print_deal_pth_info()
     向节点中写数据
     将队列节点，放入数据队列
 */
-char *get_pdata()
+char *get_pdata(rthr_info_t *args)
 {
-    char *tmp = "jingtikaijiushihaoren";
-    return tmp;
+    data_node_t * p = NULL;
+    if( can_read(args->data_que) )
+    {
+        read_outval(args->data_que,data_node_t,p);
+        //printf("thread get  data:%s\n",p->buff);
+        return p->buff;
+    }
+    else
+    {
+        return NULL;
+    }
 }
 
 int get_wdisk(rthr_info_t *info)
@@ -115,10 +128,10 @@ void *thr_run(void *args)
         disk_rid = disk_id - r_info->min_disk_id;
 
         //获取数据
-        ptr = get_pdata();
-        if( NULL == ptr )
+        ptr = get_pdata(r_info);
+        if( ptr == NULL )
         {
-            DBG("having no date to deal..............");
+            continue;
         }
 
         if ((int64_t)(r_info->buffer[disk_rid]->len + strlen(ptr)) > (int64_t)SIZE_M) 
@@ -141,9 +154,10 @@ void *thr_run(void *args)
         }
         //将数据拷贝到节点中
         memcpy(r_info->buffer[disk_rid]->buff + r_info->buffer[disk_rid]->len, ptr, strlen(ptr));
-        printf("disk_id:%d 写入数据：%s完成\n",disk_id,r_info->buffer[disk_rid]->buff + r_info->buffer[disk_rid]->len);
+        //printf("disk_id:%d 写入数据：%s完成\n",disk_id,r_info->buffer[disk_rid]->buff + r_info->buffer[disk_rid]->len);
         //对节点中数据的长度加上这次写入的数据长度
         r_info->buffer[disk_rid]->len += strlen(ptr);
+        
         sleep(1);
     }
     return NULL;
@@ -155,7 +169,7 @@ int start_deal_data()
     int i = 0;
     pthread_t   tid;
 
-    /*for (i = 0; i < def_info->rthr_num; i++) 
+    for (i = 0; i < def_info->rthr_num; i++) 
     {
         if (pthread_create(&tid, NULL, thr_run, (void*)&rthr_info[i]) < 0) 
         {
@@ -163,7 +177,5 @@ int start_deal_data()
             return -1;
         }
     }
-    */
-    pthread_create(&tid, NULL, thr_run, (void*)&rthr_info[i]);
     return 0;
 }

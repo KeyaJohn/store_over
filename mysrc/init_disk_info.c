@@ -53,7 +53,8 @@ int init_disk_info()
         }
         for (j = 0; j < def_info->node_num; j++) 
         {
-            if (!write_inval(disk_info[i].fbuff, node_info_t, &ptr[j])) {
+            if (!write_inval(disk_info[i].fbuff, node_info_t, &ptr[j])) 
+            {
                 return -1;
             }
         }

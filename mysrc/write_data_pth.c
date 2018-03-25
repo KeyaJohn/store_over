@@ -100,7 +100,6 @@ void *thw_run(void *args)
             if (!read_outval(disk_info[disk_id].bbuff,node_info_t, disk_info[disk_id].node_info)) 
             {
                 sleep(1);
-                DBG("disk:[%d] have not data..........", disk_id);
                 continue;
             }
             //如果获取的地址为空，则表示队列出问题了，这时候起始应该程序退出
@@ -166,7 +165,7 @@ void *thw_run(void *args)
 int start_write_data()
 {
     pthread_t tid;
-   /* int i = 0;
+    int i = 0;
     for (i = 0; i < def_info->wthr_num; i++) 
     {
         if (pthread_create(&tid, NULL, thw_run, (void *)&wthr_info[i]) < 0) 
@@ -175,7 +174,6 @@ int start_write_data()
             return -1;
         }
     }
-    */
-    pthread_create(&tid, NULL, thw_run, (void *)&wthr_info[0]);
+    //pthread_create(&tid, NULL, thw_run, (void *)&wthr_info[0]);
     return 0;
 }

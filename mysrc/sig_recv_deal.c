@@ -39,7 +39,6 @@ void sig_write(int signo, siginfo_t *info, void *ctext)
 {
     disk_info_t *d_info;
     
-    puts("\n\niiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii\n");
     if (signo == SIG_RETURN)
     {
         d_info = (disk_info_t*)info->si_ptr;
@@ -58,10 +57,12 @@ void sig_write(int signo, siginfo_t *info, void *ctext)
             }
             else 
             {
+                //该磁盘中繁忙节点已经写入数据了，把该节点刚回空闲节点中
                 while(!write_inval(d_info->fbuff, node_info_t, d_info->node_info)) 
                 {
                     continue;
                 }
+                //设置磁盘没有正在写的标志
                 d_info->w_flag = 1;
             }
         }

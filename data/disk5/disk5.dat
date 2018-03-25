@@ -1,0 +1,84 @@
+Packet length: 60
+Number of bytes: 60
+Recieved time: Sun Mar 25 08:19:01 2018
+Mac Destination Address is 00:0c:29:04:ff:61
+Mac      Source Address is 00:50:56:c0:00:08
+SrcIP is 192.168.93.1
+DstIP is 192.168.93.138
+Packet length: 60
+Number of bytes: 60
+Recieved time: Sun Mar 25 08:19:02 2018
+Mac Destination Address is 00:0c:29:04:ff:61
+Mac      Source Address is 00:50:56:c0:00:08
+SrcIP is 192.168.93.1
+DstIP is 192.168.93.138
+Packet length: 90
+Number of bytes: 90
+Recieved time: Sun Mar 25 08:19:02 2018
+Mac Destination Address is 00:50:56:c0:00:08
+Mac      Source Address is 00:0c:29:04:ff:61
+SrcIP is 192.168.93.138
+DstIP is 192.168.93.1
+Packet length: 106
+Number of bytes: 106
+Recieved time: Sun Mar 25 08:19:06 2018
+Mac Destination Address is 00:50:56:c0:00:08
+Mac      Source Address is 00:0c:29:04:ff:61
+SrcIP is 192.168.93.138
+DstIP is 192.168.93.1
+Packet length: 186
+Number of bytes: 186
+Recieved time: Sun Mar 25 08:19:15 2018
+Mac Destination Address is 00:50:56:c0:00:08
+Mac      Source Address is 00:0c:29:04:ff:61
+SrcIP is 192.168.93.138
+DstIP is 192.168.93.1
+Packet length: 106
+Number of bytes: 106
+Recieved time: Sun Mar 25 08:19:18 2018
+Mac Destination Address is 00:50:56:c0:00:08
+Mac      Source Address is 00:0c:29:04:ff:61
+SrcIP is 192.168.93.138
+DstIP is 192.168.93.1
+Packet length: 106
+Number of bytes: 106
+Recieved time: Sun Mar 25 08:19:20 2018
+Mac Destination Address is 00:50:56:c0:00:08
+Mac      Source Address is 00:0c:29:04:ff:61
+SrcIP is 192.168.93.138
+DstIP is 192.168.93.1
+Packet length: 106
+Number of bytes: 106
+Recieved time: Sun Mar 25 08:19:30 2018
+Mac Destination Address is 00:50:56:c0:00:08
+Mac      Source Address is 00:0c:29:04:ff:61
+SrcIP is 192.168.93.138
+DstIP is 192.168.93.1
+Packet length: 60
+Number of bytes: 60
+Recieved time: Sun Mar 25 08:19:30 2018
+Mac Destination Address is 00:0c:29:04:ff:61
+Mac      Source Address is 00:50:56:c0:00:08
+SrcIP is 192.168.93.1
+DstIP is 192.168.93.138
+Packet length: 106
+Number of bytes: 106
+Recieved time: Sun Mar 25 08:19:33 2018
+Mac Destination Address is 00:50:56:c0:00:08
+Mac      Source Address is 00:0c:29:04:ff:61
+SrcIP is 192.168.93.138
+DstIP is 192.168.93.1
+Packet length: 60
+Number of bytes: 60
+Recieved time: Sun Mar 25 08:19:33 2018
+Mac Destination Address is 00:0c:29:04:ff:61
+Mac      Source Address is 00:50:56:c0:00:08
+SrcIP is 192.168.93.1
+DstIP is 192.168.93.138
+Packet length: 90
+Number of bytes: 90
+Recieved time: Sun Mar 25 08:19:34 2018
+Mac Destination Address is 00:50:56:c0:00:08
+Mac      Source Address is 00:0c:29:04:ff:61
+SrcIP is 192.168.93.138
+DstIP is 192.168.93.1

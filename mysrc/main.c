@@ -12,6 +12,7 @@
 #include "sl_com.h"
 #include "deal_data_pth.h"
 #include "sig_recv_deal.h"
+#include "capture_package.h"
 
 int     daemon_flags = 0;
 char    log_type[8] = {0};
@@ -98,11 +99,11 @@ int main(int argc, char *argv[])
     //启动数据处理模块
     start_deal_data();
 
+    start_capture_package();
 	while(1) 
 	{
 //		DBG("Run..........\n");
 		sleep(10);
-       // pthread_kill()
 	}
 	return 0;
 }
